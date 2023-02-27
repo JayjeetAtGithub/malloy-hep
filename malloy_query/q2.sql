@@ -5,17 +5,7 @@ WITH __stage0 AS (
   FROM (
           SELECT
               unnest(Jet) as J,
-              Jet,
-              Muon,
-              MET,
-              Electron,
-              Photon,
-              Tau,
-              HLT,
-              PV,
-              run,
-              event,
-              luminosityBlock
+              MET
           FROM read_parquet('/mnt/data/*.parquet')
       ) as cross_join_sql
   GROUP BY 1

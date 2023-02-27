@@ -37,7 +37,7 @@ if __name__ == "__main__":
             result_data.append({
                 'query_no': query_no,
                 'runtime': e-s,
-                'type': 'malloy'
+                'type': 'sql'
             })
 
     df = pd.DataFrame(result_data)

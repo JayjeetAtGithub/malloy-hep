@@ -16,7 +16,7 @@ WITH __stage0 AS (
               run,
               event,
               luminosityBlock
-          FROM read_parquet('dataset/*.parquet')
+          FROM read_parquet('/mnt/data/*.parquet')
       ) as cross_join_sql
   GROUP BY 1
   ORDER BY 1 ASC NULLS LAST

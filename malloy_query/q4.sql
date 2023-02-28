@@ -7,7 +7,7 @@ WITH __stage0 AS (
               unnest(Jet) as J,
               Jet,
               MET,
-          FROM read_parquet('dataset/hep1.parquet')
+          FROM read_parquet('/mnt/data/*.parquet')
       ) as x) as cross_join_sql
   LEFT JOIN (select UNNEST(generate_series(1,
           100000, --

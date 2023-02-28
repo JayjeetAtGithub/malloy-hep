@@ -1,0 +1,12 @@
+source: hep is table('duckdb:../hep.parquet')
+
+query: query1 is hep -> {
+    group_by: x is
+        floor((pick -1  when MET.pt < 0
+        pick 2001 when MET.pt > 2000
+        else MET.pt) / 20) * 20 + 10,
+    aggregate: y is count(*),
+    order_by: x
+} -> {
+    project: x, y
+}

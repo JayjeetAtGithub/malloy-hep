@@ -1,0 +1,21 @@
+sql: cross_join_sql is {
+    select: """
+        SELECT
+            unnest(Jet) as J,
+            MET
+        FROM read_parquet('../hep.parquet')
+    """
+    connection: "duckdb"
+}
+
+query: query3 is from_sql(cross_join_sql) -> {
+    group_by: x is
+        floor(((pick 14.99  when J.pt < 15
+        pick 60.01 when J.pt > 60
+        else J.pt) - 0.15) / 0.45) * 0.45 + 0.375,
+    aggregate: y is count(*)
+    order_by: x
+    where: abs(J.eta) < 1
+} -> {
+    project: x, y
+}

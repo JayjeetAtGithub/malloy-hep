@@ -102,3 +102,7 @@ SELECT
 FROM __stage0 as base
 GROUP BY 1
 ORDER BY 1 asc NULLS LAST
+-- this query is not the exact one that malloy gives.
+-- we replace grouping by by event with a uuid so that duplicate rows can be handled
+-- when the file is replicated as after replication event field 
+-- no longer uniquely identifies a row.

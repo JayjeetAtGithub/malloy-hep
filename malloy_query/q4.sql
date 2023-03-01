@@ -58,7 +58,7 @@ WITH __stage0 AS (
   SELECT 
      hep."uid" as "uid",
      ANY_VALUE(hep."MET") as "MET",
-  FROM (SELECT gen_random_uuid() uid, * FROM 'dataset/*.parquet') as hep
+  FROM (SELECT gen_random_uuid() uid, * FROM '/mnt/data/*.parquet') as hep
   LEFT JOIN (select UNNEST(generate_series(1,
           100000, --
           -- (SELECT genres_length FROM movies limit 1),

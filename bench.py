@@ -46,7 +46,7 @@ def run_bench(query_no, iterations):
 if __name__ == "__main__":
     mode = str(sys.argv[1])
     if mode == 'e2e':
-        for query_no in [1, 2, 3]:
+        for query_no in [1, 2, 3, 4]:
             run_bench(query_no, 5)
         
         df = pd.DataFrame(result_data)

@@ -91,7 +91,7 @@ WITH __stage0 AS (
           100000, --
           -- (SELECT genres_length FROM movies limit 1),
           1)) as __row_id) as Jet_0 ON  Jet_0.__row_id <= array_length(hep."Jet")
-  GROUP BY 1, 2
+  GROUP BY 2, 1
   HAVING (COUNT( CASE WHEN hep.Jet[Jet_0.__row_id]."pt">40 THEN 1 END)>1)
   ORDER BY 1 asc NULLS LAST
 )

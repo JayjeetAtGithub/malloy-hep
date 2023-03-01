@@ -17,14 +17,12 @@
 --   GROUP BY cross_join_sql."MET"
 --   ORDER BY 1 desc NULLS LAST
 -- ),
-
 -- __stage1 AS (
 -- SELECT 
 --    base."MET" as "MET",
 -- FROM __stage0 as base
 -- WHERE base."c">1
 -- ),
-
 -- __stage2 AS (
 --   SELECT
 --      ((floor((CASE WHEN hep.MET."pt"<0 THEN -1 WHEN hep.MET."pt">2000 THEN 2001 ELSE hep.MET."pt" END)*1.0/20))*20)+10 as "x",
@@ -33,23 +31,26 @@
 --   GROUP BY 1
 --   ORDER BY 1 ASC NULLS LAST
 -- )
-
 -- SELECT
 --    base."x" as "x",
 --    base."y" as "y"
 -- FROM __stage2 as base
-WITH __stage0 AS (
-  SELECT
-     ((floor((CASE WHEN hep.MET."pt"<0 THEN -1 WHEN hep.MET."pt">2000 THEN 2001 ELSE hep.MET."pt" END)*1.0/20))*20)+10 as "x",
-     COUNT( 1) as "y"
-  FROM '/mnt/data/*.parquet' as hep
-  WHERE (
-   (SELECT count(*) FROM UNNEST(hep.Jet) WHERE Jet.pt>40)>1
-  )
-  GROUP BY 1
-  ORDER BY 1 ASC NULLS LAST
-)
-SELECT
-   base."x" as "x",
-   base."y" as "y"
-FROM __stage0 as base
+-- this does not work for replicated files, group by cannot distinguish between same rows from different files
+
+
+-- WITH __stage0 AS (
+--   SELECT
+--      ((floor((CASE WHEN hep.MET."pt"<0 THEN -1 WHEN hep.MET."pt">2000 THEN 2001 ELSE hep.MET."pt" END)*1.0/20))*20)+10 as "x",
+--      COUNT( 1) as "y"
+--   FROM '/mnt/data/*.parquet' as hep
+--   WHERE (
+--    (SELECT count(*) FROM UNNEST(hep.Jet) WHERE Jet.pt>40)>1
+--   )
+--   GROUP BY 1
+--   ORDER BY 1 ASC NULLS LAST
+-- )
+-- SELECT
+--    base."x" as "x",
+--    base."y" as "y"
+-- FROM __stage0 as base
+-- this works, just a copy of Q1 with the unnest thing, but no perf improvement, obviously :(.

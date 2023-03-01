@@ -1,7 +1,7 @@
 # malloy-bench
 
 Converting the queries [here](https://github.com/RumbleDB/iris-hep-benchmark-bigquery/tree/master/queries) to Malloy and measuring performance improvement. 
-Till now, I could only convert Q1, Q2, and Q3 queries to Malloy.
+Till now, I could only convert Q1, Q2, Q3, and Q4 queries to Malloy.
 
 ## How to use this repo ?
 

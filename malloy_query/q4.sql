@@ -81,6 +81,7 @@
 --    base."x" as "x",
 --    base."y" as "y"
 -- FROM __stage1 as base
+-- same as the query below, but broken into different stages, more memory usage, gets killed by the OS
 
 WITH __stage0 AS (
   SELECT 

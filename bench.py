@@ -47,7 +47,7 @@ if __name__ == "__main__":
     mode = str(sys.argv[1])
     if mode == 'e2e':
         for query_no in [1, 2, 3, 4]:
-            run_bench(query_no, 5)
+            run_bench(query_no, int(sys.argv[2]))
         
         df = pd.DataFrame(result_data)
         sns.barplot(x='query_no', y='runtime', hue='type', data=df)

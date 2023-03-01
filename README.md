@@ -9,6 +9,11 @@ Till now, I could only convert Q1, Q2, Q3, and Q4 queries to Malloy.
 2. `hep.parquet` is the dataset used for this project.
 3. For this benchmark, I replicate the `hep.parquet` file 10000 times using the `dataset.sh` script.
 4. `bench.py` is my little script to run the benchmarks.
+
 ```bash
-python3 bench.py q {query_no}
+// to run a single query
+python3 bench.py q {query_no} 
+
+// to run all the queries for `r` reps and plot the results
+python3 bench.py e2e {r}
 ```

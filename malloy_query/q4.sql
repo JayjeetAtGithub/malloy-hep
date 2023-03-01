@@ -42,7 +42,7 @@ WITH __stage0 AS (
   SELECT
      ((floor((CASE WHEN hep.MET."pt"<0 THEN -1 WHEN hep.MET."pt">2000 THEN 2001 ELSE hep.MET."pt" END)*1.0/20))*20)+10 as "x",
      COUNT( 1) as "y"
-  FROM 'dataset/hep2.parquet' as hep
+  FROM '/mnt/data/*.parquet' as hep
   WHERE (
    (SELECT count(*) FROM UNNEST(hep.Jet) WHERE Jet.pt>40)>1
   )

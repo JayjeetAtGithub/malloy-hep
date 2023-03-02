@@ -10,7 +10,7 @@ sql: cross_join_sql is {
     connection: "duckdb"
 }
 
-query: query5 is from_sql(cross_join_sql) -> {
+query: query7 is from_sql(cross_join_sql) -> {
   declare: cond1 is Electron.count() {? Electron.pt > 10 and sqrt((J.eta - Electron.eta) * (J.eta - Electron.eta) + pow((J.phi - Electron.phi + pi()) % (2 * pi()) - pi(), 2)) < 0.4} = 0
   declare: cond2 is Muon.count() {? Muon.pt > 10 and sqrt((J.eta - Muon.eta) * (J.eta - Muon.eta) + pow((J.phi - Muon.phi + pi()) % (2 * pi()) - pi(), 2)) < 0.4} = 0
   declare: cond3 is J.pt > 30

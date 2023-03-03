@@ -10,7 +10,7 @@ if __name__ == "__main__":
     for i in range(1, 10001):
 
         sql = f"""
-            SELECT convert(varchar, gen_random_uuid()) AS uuid, * FROM '/mnt/data/dataset/hep.{i}.parquet'
+            SELECT gen_random_uuid::varchar AS uuid, * FROM '/mnt/data/dataset/hep.{i}.parquet'
         """
         df = duckdb.sql(sql).df()
         filepath = f"/mnt/data/dataset_uuid/hep.uuid.{i}.parquet"

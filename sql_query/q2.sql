@@ -6,7 +6,7 @@ SELECT
       ELSE j.pt
     END - 0.15) / 0.45) * 0.45 + 0.375 AS x,
   COUNT(*) AS y
-FROM '/mnt/data/*.parquet'
+FROM '/mnt/data/dataset/*.parquet'
 CROSS JOIN UNNEST(Jet) AS _j(j)
 GROUP BY FLOOR((
     CASE

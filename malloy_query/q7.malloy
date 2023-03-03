@@ -1,27 +1,19 @@
-sql: cross_join_sql is {
-    select: """
-        SELECT
-            unnest(Jet) as J,
-            Electron,
-            Muon,
-            event
-        FROM read_parquet('../hep.parquet')
-    """
-    connection: "duckdb"
+source: hep_cross_joined is table('duckdb:../../hep2.cross_joined.parquet') {
+    declare: pt_sum is sum(Jet_2.pt)
+    declare: x is 
+        floor((pick 14.9 when pt_sum < 15
+        pick 200.1 when pt_sum > 200
+        else pt_sum - 0.2) / 1.85) * 1.85 + 1.125
 }
 
-query: query7 is from_sql(cross_join_sql) -> {
-  declare: cond1 is Electron.count() {? Electron.pt > 10 and sqrt((J.eta - Electron.eta) * (J.eta - Electron.eta) + pow((J.phi - Electron.phi + pi()) % (2 * pi()) - pi(), 2)) < 0.4} = 0
-  declare: cond2 is Muon.count() {? Muon.pt > 10 and sqrt((J.eta - Muon.eta) * (J.eta - Muon.eta) + pow((J.phi - Muon.phi + pi()) % (2 * pi()) - pi(), 2)) < 0.4} = 0
-  declare: cond3 is J.pt > 30
-  aggregate: pt_sum is sum(J.pt)
-  group_by: event
+query: query7 is hep_cross_joined -> {
+  declare: cond1 is Electron.count() {? Electron.pt > 10 and sqrt((Jet_2.eta - Electron.eta) * (Jet_2.eta - Electron.eta) + pow((Jet_2.phi - Electron.phi + pi()) % (2 * pi()) - pi(), 2)) < 0.4} = 0
+  declare: cond2 is Muon.count() {? Muon.pt > 10 and sqrt((Jet_2.eta - Muon.eta) * (Jet_2.eta - Muon.eta) + pow((Jet_2.phi - Muon.phi + pi()) % (2 * pi()) - pi(), 2)) < 0.4} = 0
+  declare: cond3 is Jet_2.pt > cosh(30)
+  group_by: event, x
   where: cond3, cond1, cond2
 } -> {
-    group_by: x is 
-        floor(((pick 14.9 when pt_sum < 15
-        pick 200.1 when pt_sum > 200
-        else pt_sum) - 0.2) / 1.85) * 1.85 + 1.125
-    order_by: x
+    group_by: x
     aggregate: y is count()
+    order_by: x
 }

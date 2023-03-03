@@ -87,7 +87,7 @@ WITH __stage0 AS (
   SELECT 
     ((floor((CASE WHEN hep.MET."pt"<0 THEN -1 WHEN hep.MET."pt">2000 THEN 2001 ELSE hep.MET."pt" END)*1.0/20))*20)+10 as "x",
      hep."uid" as "uid"
-  FROM (SELECT gen_random_uuid() uid, * FROM '/mnt/data/*.parquet') as hep
+  FROM (SELECT gen_random_uuid() uid, * FROM '/mnt/data/dataset/*.parquet') as hep
   LEFT JOIN (select UNNEST(generate_series(1,
           100000, --
           -- (SELECT genres_length FROM movies limit 1),

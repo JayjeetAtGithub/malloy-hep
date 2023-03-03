@@ -6,7 +6,7 @@ SELECT
       ELSE MET.pt
     END) / 20) * 20 + 10 AS x,
   COUNT(*) AS y
-FROM '/mnt/data/*.parquet'
+FROM '/mnt/data/dataset/*.parquet'
 GROUP BY FLOOR((
     CASE
       WHEN MET.pt < 0 THEN -1

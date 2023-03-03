@@ -12,8 +12,8 @@ Till now, I could only convert Q1, Q2, Q3, and Q4 queries to Malloy.
 
 ```bash
 // to run a single query
-python3 bench.py q /mnt/data/dataset_uuid {query_no} 
+python3 bench.py q /mnt/data/dataset_uid {query_no} 
 
 // to run all the queries for `r` reps and plot the results
-python3 bench.py e2e /mnt/data/dataset_uuid {r}
+python3 bench.py e2e /mnt/data/dataset_uid {r}
 ```

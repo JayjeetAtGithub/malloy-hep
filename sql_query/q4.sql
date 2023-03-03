@@ -6,7 +6,7 @@ SELECT
         ELSE MET.pt
         END) / 20) * 20 + 10 AS x,
     COUNT(*) AS y
-FROM '/mnt/data/dataset/*.parquet'
+FROM {dataset_path}
 WHERE (
     SELECT 
         COUNT(*) 

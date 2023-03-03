@@ -6,7 +6,7 @@ WITH __stage0 AS (
           SELECT
               unnest(Jet) as J,
               MET
-          FROM '/mnt/data/dataset/*.parquet'
+          FROM {dataset_path}
       ) as cross_join_sql
   GROUP BY 1
   ORDER BY 1 ASC NULLS LAST

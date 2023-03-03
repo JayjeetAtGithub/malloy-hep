@@ -6,7 +6,7 @@ WITH __stage0 AS (
           SELECT
               unnest(Jet) as J,
               MET
-          FROM '/mnt/data/dataset/*.parquet'
+          FROM {dataset_path}
       ) as cross_join_sql
   WHERE (abs(cross_join_sql.J."eta"))<1
   GROUP BY 1

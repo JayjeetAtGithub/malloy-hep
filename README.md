@@ -7,7 +7,7 @@ Till now, I could only convert Q1, Q2, Q3, and Q4 queries to Malloy.
 
 1. The `malloy_query` dir contains the Malloy version (and malloy to sql converted version) of the queries in the `sql_query` dir.
 2. `hep.parquet` is the dataset used for this project.
-3. For this benchmark, I replicate the `hep.parquet` file 10000 times using the `dataset.sh` script.
+3. For this benchmark, I replicate the `hep.parquet` file 10000 times using the `create_dataset.py` script.
 4. `bench.py` is my little script to run the benchmarks.
 
 ```bash

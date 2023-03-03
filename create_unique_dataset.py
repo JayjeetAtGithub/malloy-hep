@@ -1,11 +1,13 @@
 import duckdb
+import pandas
 
 if __name__ == "__main__":
 
     for i in range(1, 10001):
         sql = """
-            SELECT generate_random_uuid() AS uuid, * FROM '/mnt/data/hep.{i}.parquet'
+            SELECT generate_random_uuid() AS uuid, * FROM '/mnt/data/dataset/hep.{i}.parquet'
         """
         df = duckdb.sql(sql).df()
-        df.to_parquet(f"/mnt/data/{i}.parquet")
-
+        filepath = f"/mnt/data/dataset_uuid/hep.uuid.{i}.parquet"
+        df.to_parquet(filepath)
+        print("Wrote ", filepath)

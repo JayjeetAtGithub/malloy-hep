@@ -4,7 +4,7 @@ import duckdb
 import pandas
 
 if __name__ == "__main__":
-    os.removedirs("/mnt/data/dataset_uuid", ignore_errors=True)
+    os.rmdir("/mnt/data/dataset_uuid")
     os.makedirs("/mnt/data/dataset_uuid", exist_ok=True)
     for i in range(1, 10001):
 

@@ -1,0 +1,37 @@
+sql: cross_join_sql is {
+    select: """
+        SELECT
+            Muon, m1, m2, MET, event, idx1, idx2
+        FROM `hep2.hep`
+        CROSS JOIN UNNEST(Muon.list) m1 WITH OFFSET idx1
+        CROSS JOIN UNNEST(Muon.list) m2 WITH OFFSET idx2    
+        """
+    connection: "bigquery"
+} 
+
+query: query5 is from_sql(cross_join_sql) -> {
+    declare: m1_c is m1.element.charge
+    declare: m2_c is m2.element.charge
+    declare: m1_pt is m1.element.pt
+    declare: m2_pt is m2.element.pt
+    declare: m1_eta is m1.element.eta
+    declare: m2_eta is m2.element.eta
+    declare: m1_phi is m1.element.phi
+    declare: m2_phi is m2.element.phi
+    declare: met_pt is MET.pt
+    declare: cond1 is Muon.count() > 1
+    declare: cond2 is idx1 < idx2
+    declare: cond3 is m1_c != m2_c
+    declare: expr is sqrt(2 * m1_pt * m2_pt * (cosh(m1_eta - m2_eta) - cos(m1_phi - m2_phi)))
+    declare: cond4 is (expr > 60 and expr < 120)
+    group_by: met_pt, event, idx1, idx2, m1_c, m2_c, m1_pt, m2_pt, m1_phi, m2_phi, m1_eta, m2_eta
+    where: cond1 and cond2 and cond3 and cond4
+    having: count() > 0
+} -> {
+    group_by: x is
+        floor((pick -1  when met_pt < 0
+        pick 2001 when met_pt > 2000
+        else met_pt) / 20) * 20 + 10
+    order_by: x
+    aggregate: y is count()
+}

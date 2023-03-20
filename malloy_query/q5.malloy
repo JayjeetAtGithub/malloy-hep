@@ -1,7 +1,7 @@
 sql: cross_join_sql is {
     select: """
         SELECT
-            Muon, m1, m2, MET, event, idx1, idx2
+            Muon, m1, m2, MET, event, idx1, idx2, array_length(Muon.list) as Mlen
         FROM `hep2.hep`
         CROSS JOIN UNNEST(Muon.list) m1 WITH OFFSET idx1
         CROSS JOIN UNNEST(Muon.list) m2 WITH OFFSET idx2    
@@ -19,14 +19,16 @@ query: query5 is from_sql(cross_join_sql) -> {
     declare: m1_phi is m1.element.phi
     declare: m2_phi is m2.element.phi
     declare: met_pt is MET.pt
-    declare: cond1 is Muon.count() > 1
+    
+    declare: cond1 is Mlen > 1
     declare: cond2 is idx1 < idx2
     declare: cond3 is m1_c != m2_c
     declare: expr is sqrt(2 * m1_pt * m2_pt * (cosh(m1_eta - m2_eta) - cos(m1_phi - m2_phi)))
-    declare: cond4 is (expr > 60 and expr < 120)
-    group_by: met_pt, event, idx1, idx2, m1_c, m2_c, m1_pt, m2_pt, m1_phi, m2_phi, m1_eta, m2_eta
+    declare: cond4 is (expr >= 60 and expr <= 120)
+
+    group_by: met_pt, event
     where: cond1 and cond2 and cond3 and cond4
-    having: count() > 0
+    having: count(*) > 0
 } -> {
     group_by: x is
         floor((pick -1  when met_pt < 0

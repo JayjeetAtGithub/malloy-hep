@@ -4,13 +4,13 @@ WITH __stage0 AS (
      cross_join_sql.event as event
   FROM (
           SELECT
-              Muon, m1, m2, MET, event, idx1, idx2, array_length(Muon.list) as Mlen
-          FROM `hep2.hep`
+              uid, Muon, m1, m2, MET, event, idx1, idx2, array_length(Muon.list) as Mlen
+          FROM (SELECT generate_uuid() uid, * FROM `hep2.gcs_table`)
           CROSS JOIN UNNEST(Muon.list) m1 WITH OFFSET idx1
           CROSS JOIN UNNEST(Muon.list) m2 WITH OFFSET idx2    
           ) as cross_join_sql
   WHERE (((cross_join_sql.Mlen>1) and (cross_join_sql.idx1<cross_join_sql.idx2))and (COALESCE(NOT((cross_join_sql.m1.element.charge)=(cross_join_sql.m2.element.charge)),FALSE)))and (((sqrt(((2*(cross_join_sql.m1.element.pt))*(cross_join_sql.m2.element.pt))*(((cosh((cross_join_sql.m1.element.eta)-(cross_join_sql.m2.element.eta)))-(cos((cross_join_sql.m1.element.phi)-(cross_join_sql.m2.element.phi)))))))>=60)and((sqrt(((2*(cross_join_sql.m1.element.pt))*(cross_join_sql.m2.element.pt))*(((cosh((cross_join_sql.m1.element.eta)-(cross_join_sql.m2.element.eta)))-(cos((cross_join_sql.m1.element.phi)-(cross_join_sql.m2.element.phi)))))))<=120))
-  GROUP BY 1,2
+  GROUP BY uid,1,2
   HAVING COUNT( 1)>0
   ORDER BY 1 asc
 )

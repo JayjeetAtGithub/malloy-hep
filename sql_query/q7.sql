@@ -5,14 +5,14 @@ WITH matching_jets AS (
   CROSS JOIN UNNEST(Jet) AS _j(j)
   WHERE
     j.pt > 30 AND
-    cardinality(
-        filter(
+    array_length(
+        array_filter(
             Electron,
             x -> x.pt > 10 AND
                  sqrt( (j.eta - x.eta) * (j.eta - x.eta) +
                        pow( (j.phi - x.phi + pi()) % (2 * pi()) - pi(), 2) ) < 0.4)) = 0 AND
-    cardinality(
-        filter(
+    array_length(
+        array_filter(
             Muon,
             x -> x.pt > 10 AND
                  sqrt( (j.eta - x.eta) * (j.eta - x.eta) +

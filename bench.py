@@ -51,10 +51,11 @@ if __name__ == "__main__":
     
     if mode == 'e2e':
         reps = int(sys.argv[3])
-        for query_no in [1, 2, 3, 4]:
+        for query_no in [1, 2, 3, 4, 7]:
             run_bench(query_no, reps, dataset)
         
         df = pd.DataFrame(result_data)
+        df.to_csv('result.csv')
         sns.barplot(x='query_no', y='runtime', hue='type', data=df)
         plt.savefig('result.pdf')
     elif mode == 'q':

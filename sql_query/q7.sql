@@ -1,7 +1,7 @@
 -- Compute sum of pt of each matching jet
 WITH matching_jets AS (
   SELECT event, SUM(j.pt) AS pt_sum
-  FROM {input_table}
+  FROM '{dataset_path}'
   CROSS JOIN UNNEST(Jet) AS _j(j)
   WHERE
     j.pt > 30 AND

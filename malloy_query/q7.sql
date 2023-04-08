@@ -6,7 +6,7 @@ WITH __stage0 AS (
           SELECT j, event
           FROM (SELECT
                   event, Electron, Muon, unnest(Jet) as j
-              FROM read_parquet('../hep.parquet')
+              FROM '{dataset_path}'
           )
           WHERE 
               array_length(array_filter(
